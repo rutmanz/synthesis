@@ -20,8 +20,8 @@ import IntakeDriver from "../driver/IntakeDriver"
 import EjectorDriver from "../driver/EjectorDriver"
 import GamepieceManipBehavior from "../behavior/synthesis/GamepieceManipBehavior"
 import { JoltVec3_JoltRVec3 } from "@/util/TypeConversions"
-import { Global_AddToast } from "@/components/GlobalUIControls.ts"
 import SkidSteerDriveBehavior from "@/systems/simulation/behavior/synthesis/drive/SkidSteerDriveBehavior.ts"
+import { Global_AddToast } from "@/components/GlobalUIControls.ts"
 
 class SynthesisBrain extends Brain {
     public static brainIndexMap = new Map<number, SynthesisBrain>()
@@ -73,7 +73,7 @@ class SynthesisBrain extends Brain {
                     this.configureSkidSteerDriveBehavior(false)
                     break
                 case DriveType.SWERVE:
-                    Global_AddToast?.("error", "Swerve not supported", "check back soon")
+                    this.configureSwerveDriveBehavior()
                     break
             }
             this.configureArmBehaviors()
@@ -125,6 +125,9 @@ class SynthesisBrain extends Brain {
         InputSystem.brainIndexSchemeMap.delete(this._brainIndex)
     }
 
+    private configureSwerveDriveBehavior(): void {
+        Global_AddToast?.("error", "Swerve not supported", "check back soon")
+    }
     /** Creates an instance of ArcadeDriveBehavior and automatically configures it. */
     private configureSkidSteerDriveBehavior(isArcade: boolean) {
         const wheelDrivers: WheelDriver[] = this._simLayer.drivers.filter(
